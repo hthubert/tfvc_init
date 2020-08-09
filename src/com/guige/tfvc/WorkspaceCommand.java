@@ -10,9 +10,11 @@ import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 
 import java.util.List;
+import java.util.concurrent.Callable;
 
-@Command(name = "workspace")
-public class WorkspaceCommand implements Runnable {
+@Command(name = "workspace",
+        description = "Enables you to create, delete, and modify properties and mappings associated with a workspace.")
+public class WorkspaceCommand implements Callable<Integer> {
     @ArgGroup(exclusive = true, multiplicity = "0")
     private Action action;
 
@@ -39,7 +41,11 @@ public class WorkspaceCommand implements Runnable {
     private List<String> workspacename;
 
     @Override
-    public void run() {
+    public Integer call() {
+        AuthenticationInfo info = new DeviceAuthorization().getAuthenticationInfo();
+        System.out.printf("User: %s%n",info.getUserName());
+        System.out.printf("Password: %s%n",info.getPassword());
 
+        return 0;
     }
 }
