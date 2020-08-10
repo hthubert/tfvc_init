@@ -1,10 +1,10 @@
 // Copyright (c) guige.com. All rights reserved.
 // Licensed under the MIT license. See License.txt in the project root.
 
-package com.guige.tfvc.common.artifact;
+package com.guige.tfvc.artifact;
 
-import com.guige.tfvc.common.exceptions.MalformedArtifactIDException;
-import com.guige.tfvc.common.exceptions.MalformedURIException;
+import com.guige.tfvc.exceptions.MalformedArtifactIDException;
+import com.guige.tfvc.exceptions.MalformedURIException;
 import org.apache.commons.lang3.StringUtils;
 
 /**

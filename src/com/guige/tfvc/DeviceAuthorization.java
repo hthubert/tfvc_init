@@ -3,8 +3,8 @@
 
 package com.guige.tfvc;
 
-import com.guige.tfvc.common.utils.SystemHelper;
-import com.guige.tfvc.common.utils.UrlHelper;
+import com.guige.tfvc.utils.SystemHelper;
+import com.guige.tfvc.utils.UrlHelper;
 import com.guige.tfvc.exceptions.ProfileDoesNotExistException;
 import com.microsoft.alm.auth.PromptBehavior;
 import com.microsoft.alm.auth.oauth.OAuth2Authenticator;

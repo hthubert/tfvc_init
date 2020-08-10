@@ -2,10 +2,10 @@
 // Licensed under the MIT license. See License.txt in the project root.
 
 
-package com.guige.tfvc.common.artifact;
+package com.guige.tfvc.artifact;
 
-import com.guige.tfvc.common.exceptions.MalformedArtifactIDException;
-import com.guige.tfvc.common.exceptions.MalformedURIException;
+import com.guige.tfvc.exceptions.MalformedArtifactIDException;
+import com.guige.tfvc.exceptions.MalformedURIException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

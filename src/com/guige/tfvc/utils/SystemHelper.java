@@ -1,7 +1,7 @@
 // Copyright (c) guige.com. All rights reserved.
 // Licensed under the MIT license. See License.txt in the project root.
 
-package com.guige.tfvc.common.utils;
+package com.guige.tfvc.utils;
 
 import com.sun.jna.Platform;
 import org.apache.commons.io.comparator.PathFileComparator;

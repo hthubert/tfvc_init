@@ -2,9 +2,9 @@
 // Licensed under the MIT license. See License.txt in the project root.
 
 
-package com.guige.tfvc.common.utils;
+package com.guige.tfvc.utils;
 
-import com.guige.tfvc.common.artifact.GitRefArtifactID;
+import com.guige.tfvc.artifact.GitRefArtifactID;
 import com.microsoft.alm.helpers.UriHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.client.utils.URIBuilder;

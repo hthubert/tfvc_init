@@ -1,7 +1,7 @@
 // Copyright (c) guige.com. All rights reserved.
 // Licensed under the MIT license. See License.txt in the project root.
 
-package com.guige.tfvc.common.exceptions;
+package com.guige.tfvc.exceptions;
 
 /**
  * Thrown when a URI string is invalid.

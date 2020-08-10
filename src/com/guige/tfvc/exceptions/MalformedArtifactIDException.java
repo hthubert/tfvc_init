@@ -1,10 +1,9 @@
 // Copyright (c) guige.com. All rights reserved.
 // Licensed under the MIT license. See License.txt in the project root.
 
+package com.guige.tfvc.exceptions;
 
-package com.guige.tfvc.common.exceptions;
-
-import com.guige.tfvc.common.artifact.ArtifactID;
+import com.guige.tfvc.artifact.ArtifactID;
 
 import java.text.MessageFormat;
 
