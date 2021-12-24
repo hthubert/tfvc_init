@@ -1,7 +1,6 @@
 // Copyright (c) guige.com. All rights reserved.
 // Licensed under the MIT license. See License.txt in the project root.
 
-
 package com.guige.tfvc.utils;
 
 import com.guige.tfvc.artifact.GitRefArtifactID;

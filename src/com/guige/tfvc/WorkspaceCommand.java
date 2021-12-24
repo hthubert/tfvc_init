@@ -4,6 +4,9 @@
 
 package com.guige.tfvc;
 
+import com.guige.tfvc.commands.CreateWorkspaceCommand;
+import com.guige.tfvc.models.Workspace;
+import org.apache.commons.lang3.StringUtils;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -15,7 +18,7 @@ import java.util.concurrent.Callable;
 @Command(name = "workspace",
         description = "Enables you to create, delete, and modify properties and mappings associated with a workspace.")
 public class WorkspaceCommand implements Callable<Integer> {
-    @ArgGroup(exclusive = true, multiplicity = "0")
+    @ArgGroup(exclusive = true, multiplicity = "1")
     private Action action;
 
     private static class Action {
@@ -43,9 +46,24 @@ public class WorkspaceCommand implements Callable<Integer> {
     @Override
     public Integer call() {
         AuthenticationInfo info = new DeviceAuthorization().getAuthenticationInfo();
+        ServerContext.getInstance().authenticationInfo(info);
+        ServerContext.getInstance().collectionURI(collection);
         System.out.printf("User: %s%n",info.getUserName());
         System.out.printf("Password: %s%n",info.getPassword());
+        if (action._new) {
+            if (StringUtils.isEmpty(comment)){
+                comment = "Workspace created through tfvc_init";
+            }
 
+            final CreateWorkspaceCommand command = new CreateWorkspaceCommand(
+                    ServerContext.getInstance(),
+                    workspacename.get(0),
+                    comment,
+                    null,
+                    null,
+                    Workspace.Location.fromString(location));
+            command.runSynchronously();
+        }
         return 0;
     }
 }

@@ -3,6 +3,7 @@ plugins {
 }
 
 apply from: 'dependencies.gradle'
+
 apply plugin: 'java'
 apply plugin: 'checkstyle'
 apply plugin: 'pmd'
@@ -17,17 +18,7 @@ repositories {
     mavenCentral()
 }
 
-configurations {
-    codeAnalysisLibs
-
-    // Some our dependencies should be included *before* dependencies from IDEA (e.g. junit, jackson-databind). IDEA
-    // has some versions of these dependencies that sometimes break tests (see comments for particular dependencies
-    // included into this configuration for details).
-    priorityTestCompile
-}
-
 dependencies {
-
     compile group: 'com.google.guava', name: 'guava', version: '23.0'
     compile group: 'net.java.dev.jna', name: 'jna-platform', version: '4.1.0'
     compile 'org.apache.commons:commons-lang3:3.11'
@@ -47,7 +38,6 @@ dependencies {
     compile ':com.microsoft.alm.client.sourcecontrol:0.4.3-SNAPSHOT'
     compile ':com.microsoft.alm.client.workitemtracking:0.4.3-SNAPSHOT'
 
-    codeAnalysisLibs 'com.google.code.findbugs:annotations:3.0.0'
     compile group: 'commons-io', name: 'commons-io', version: '2.4'
     compile group: 'org.glassfish.jersey.core', name: 'jersey-client', version: '2.28'
     compile group: 'org.glassfish.jersey.connectors', name: 'jersey-apache-connector', version: '2.28'
@@ -60,12 +50,12 @@ dependencies {
     compile (group: 'com.microsoft.alm', name: 'auth-core', version: '0.6.4') {
         exclude group: 'org.slf4j', module: 'slf4j-api'
     }
-    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
     // IDEA has two other junit versions embedded into it: 3.8.1 (junit.jar) and 4.12 (junit-4.12.jar). We need our
     // version to take priority.
-    priorityTestCompile group: 'junit', name: 'junit', version: '4.12'
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-log4j12
-    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.30'
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+    testCompile group: 'org.slf4j', name: 'slf4j-log4j12', version: '1.7.25'
 }
 
 compileJava {
@@ -74,6 +64,15 @@ compileJava {
 
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
+
+configurations {
+    codeAnalysisLibs
+
+    // Some our dependencies should be included *before* dependencies from IDEA (e.g. junit, jackson-databind). IDEA
+    // has some versions of these dependencies that sometimes break tests (see comments for particular dependencies
+    // included into this configuration for details).
+    priorityTestCompile
+}
 
 sourceSets {
     main {
@@ -102,9 +101,6 @@ jar {
         )
     }
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    into('assets') {
-        from 'assets'
-    }
 }
 
 /**

@@ -3,9 +3,9 @@
 
 package com.guige.tfvc.utils;
 
-import com.microsoft.alm.plugin.external.models.Workspace;
-import com.microsoft.alm.plugin.services.PluginServiceProvider;
-import org.apache.commons.lang.StringUtils;
+import com.guige.tfvc.ServerContext;
+import com.guige.tfvc.models.Workspace;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -181,7 +181,7 @@ public class WorkspaceHelper {
             return null;
         }
         final String propertyName = getProxyPropertyName(serverURI);
-        final String currentProxy = PluginServiceProvider.getInstance().getPropertyService().getProperty(propertyName);
+        final String currentProxy = ServerContext.getInstance().getProperty(propertyName);
         if (StringUtils.isEmpty(currentProxy)) {
             return null;
         }
@@ -200,9 +200,9 @@ public class WorkspaceHelper {
         }
         final String propertyName = getProxyPropertyName(serverURI);
         if (StringUtils.isEmpty(proxyURI)) {
-            PluginServiceProvider.getInstance().getPropertyService().removeProperty(propertyName);
+            ServerContext.getInstance().removeProperty(propertyName);
         } else {
-            PluginServiceProvider.getInstance().getPropertyService().setProperty(propertyName, proxyURI);
+            ServerContext.getInstance().setProperty(propertyName, proxyURI);
         }
     }
 

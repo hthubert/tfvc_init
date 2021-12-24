@@ -1,5 +1,9 @@
+// Copyright (c) Microsoft. All rights reserved.
+// Licensed under the MIT license. See License.txt in the project root.
+
 package com.guige.tfvc;
 
+import com.google.common.annotations.GwtCompatible;
 import com.google.common.util.concurrent.AbstractFuture;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.errorprone.annotations.CanIgnoreReturnValue;
@@ -49,9 +53,10 @@ abstract class TrustedFuture<V> extends AbstractFuture<V> {
     }
 }
 
+@GwtCompatible
 public final class SettableFuture<V> extends TrustedFuture<V> {
     public static <V> SettableFuture<V> create() {
-        return new SettableFuture();
+        return new SettableFuture<>();
     }
 
     @CanIgnoreReturnValue

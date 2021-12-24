@@ -13,24 +13,13 @@ import com.guige.tfvc.ToolRunnerCache;
 import com.guige.tfvc.exceptions.DollarInPathException;
 import com.guige.tfvc.exceptions.ToolException;
 import com.guige.tfvc.exceptions.ToolMemoryException;
-import com.guige.tfvc.exceptions.ToolParseFailureException;
 import com.guige.tfvc.models.Workspace;
 import com.guige.tfvc.tools.TfTool;
 import com.guige.tfvc.utils.WorkspaceHelper;
-import com.sun.org.apache.xpath.internal.jaxp.XPathFactoryImpl;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-import sun.security.util.Debug;
 
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathExpressionException;
-import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.ArrayList;
@@ -107,8 +96,8 @@ public abstract class Command<T> {
         final ToolRunner.ArgumentBuilder builder = new ToolRunner.ArgumentBuilder()
                 .add(name)
                 .addSwitch("noprompt");
-        if (context != null && context.getCollectionURI() != null) {
-            final String collectionURI = context.getCollectionURI().toString();
+        if (context != null && context.collectionURI() != null) {
+            final String collectionURI = context.collectionURI();
             // decode URI since CLC does not expect encoded collection urls
             try {
                 builder.addSwitch("collection", URLDecoder.decode(collectionURI, "UTF-8"));
@@ -258,7 +247,7 @@ public abstract class Command<T> {
             final long endTime = System.nanoTime();
             double seconds = ((double) endTime - startTime) / 1_000_000_000.0;
             logger.info(seconds + " sec - elapsed time for " + this.getArgumentBuilder().toString());
-            Debug.println("", seconds + " sec - elapsed time for " + this.getArgumentBuilder().toString());
+            //Debug.println("", seconds + " sec - elapsed time for " + this.getArgumentBuilder().toString());
         }
     }
 
@@ -287,48 +276,6 @@ public abstract class Command<T> {
      */
     public boolean shouldPrepareCachedRunner() {
         return true;
-    }
-
-    protected NodeList evaluateXPath(final String stdout, final String xpathQuery) {
-        if (StringUtils.isEmpty(stdout)) {
-            return null;
-        }
-
-        // Skip over any lines (like WARNing lines) that come before the xml tag
-        // Example:
-        // WARN -- Unable to construct Telemetry Client
-        // <?xml ...
-        final InputSource xmlInput;
-        final int xmlStart = stdout.indexOf(XML_PREFIX);
-        if (xmlStart > 0) {
-            xmlInput = new InputSource(new StringReader(stdout.substring(xmlStart)));
-        } else {
-            xmlInput = new InputSource(new StringReader(stdout));
-        }
-
-        final XPath xpath = new XPathFactoryImpl().newXPath();
-        try {
-            final Object result = xpath.evaluate(xpathQuery, xmlInput, XPathConstants.NODESET);
-            if (result != null && result instanceof NodeList) {
-                return (NodeList) result;
-            }
-        } catch (final XPathExpressionException inner) {
-            throw new ToolParseFailureException(inner);
-        }
-
-        throw new ToolParseFailureException();
-    }
-
-    protected String getXPathAttributeValue(final NamedNodeMap attributeMap, final String attributeName) {
-        String value = StringUtils.EMPTY;
-        if (attributeMap != null) {
-            final Node node = attributeMap.getNamedItem(attributeName);
-            if (node != null) {
-                value = node.getNodeValue();
-            }
-        }
-
-        return value;
     }
 
     protected String[] getLines(final String buffer) {

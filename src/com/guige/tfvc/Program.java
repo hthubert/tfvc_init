@@ -3,16 +3,22 @@
 
 package com.guige.tfvc;
 
+import com.guige.tfvc.tools.TfTool;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.PropertyConfigurator;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import java.util.concurrent.Callable;
 
-@Command(name = "tfvc_init", subcommands = {WorkspaceCommand.class})
+@Command(subcommands = {WorkspaceCommand.class})
 public class Program implements Callable<Integer> {
 
     private static CommandLine commandLine;
 
     public static void main(String... args) {
+        BasicConfigurator.configure();
+        TfTool.TF_HOME = "d:\\app\\TEE-CLC-14.134.0\\tf.cmd";
+        //PropertyConfigurator.configure("log4j.properties");
         commandLine = new CommandLine(new Program());
         try {
             commandLine.parseArgs(args);
@@ -33,6 +39,7 @@ public class Program implements Callable<Integer> {
 
     @Override
     public Integer call() {
+        commandLine.usage(System.out);
         return 0;
     }
 }
